@@ -1,31 +1,40 @@
-
 import throttle from 'lodash.throttle';
 
 const form = document.querySelector('.feedback-form');
-// console.dir(form.elements[0].value);
+const inputEmail = document.querySelector('input');
+const inputMessage = document.querySelector('textarea');
+const submitButton = document.querySelector('button');
 
 const savedInputs = localStorage.getItem('feedback-form-state');
 const parsedInputs = JSON.parse(savedInputs);
 // console.log(parsedInputs)
+
+//__звернення до сховища___
 if (parsedInputs !== null) {
-    form.elements[0].value = parsedInputs.email;
-    form.elements[1].value = parsedInputs.message;
+    inputEmail.value = parsedInputs.email;
+    inputMessage.value = parsedInputs.message;
 }
 
-form.addEventListener('submit', inputMonitor);
-// form.addEventListener('input', throttle(inputMonitor, 500));
-
-
+form.addEventListener('input', throttle(inputMonitor, 500));
+// монітор введення
 function inputMonitor(event) {
-    // console.dir(event.target)
     event.preventDefault();
-    const inputFromForm = {
-        email: event.currentTarget.elements[0].value,
-        message: event.currentTarget.elements[1].value,
+    inputFromForm = {
+        email: inputEmail.value,
+        message: inputMessage.value,
     }
     localStorage.setItem('feedback-form-state', JSON.stringify(inputFromForm))
     console.log(inputFromForm);
-    event.currentTarget.reset();
+}
+// слухач кнопки САБМІТ --- чому не працює?????
+submitButton.addEventListener('submit', submit);
+function submit(event) {
+    event.preventDefault();
+    form.reset();
+    localStorage.removeItem('feedback-form-state')
+    inputEmail.value = '';
+    inputMessage.value = '';
+    console.log(parsedInputs);
 }
 
 
@@ -34,25 +43,23 @@ function inputMonitor(event) {
 
 
 
-// form.elements[0].value = parsedInputs.email || "";
-// form.elements[1].value = parsedInputs.message || "";
 
-// if (parsedInputs !== null) {
-//     form.elements[0].value = parsedInputs.email;
-//     form.elements[1].value = parsedInputs.message;
-// }
 
+// const form = document.querySelector('.feedback-form');
+// // console.dir(form.elements[0].value);
 
 // const savedInputs = localStorage.getItem('feedback-form-state');
 // const parsedInputs = JSON.parse(savedInputs);
-// console.log(parsedInputs)
+// // console.log(parsedInputs)
 // if (parsedInputs !== null) {
 //     form.elements[0].value = parsedInputs.email;
 //     form.elements[1].value = parsedInputs.message;
 // }
+// // form.addEventListener('submit', inputMonitor);
 
-// form.addEventListener('input', inputMonitor);
-// // form.addEventListener('input', throttle(inputMonitor, 500));
+// // form.addEventListener('input', inputMonitor);
+// form.addEventListener('sabmit', submit);
+// form.addEventListener('input', throttle(inputMonitor, 500));
 
 
 // function inputMonitor(event) {
@@ -63,7 +70,17 @@ function inputMonitor(event) {
 //         message: event.currentTarget.elements[1].value,
 //     }
 //     localStorage.setItem('feedback-form-state', JSON.stringify(inputFromForm))
-//     // console.log(inputFromForm);
-//     event.currentTarget.reset();
-
+//     console.log(inputFromForm);
 // }
+// function submit(event) {
+//     // console.dir(event.target)
+//     event.preventDefault();
+//     // const inputFromForm = {
+//     //     email: event.currentTarget.elements[0].value,
+//     //     message: event.currentTarget.elements[1].value,
+//     // }
+//     // localStorage.setItem('feedback-form-state', JSON.stringify(inputFromForm))
+//     console.log(parsedInputs);
+//     event.currentTarget.reset();
+// }
+// form.reset();
