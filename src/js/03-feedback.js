@@ -19,7 +19,7 @@ form.addEventListener('input', throttle(inputMonitor, 500));
 // монітор введення
 function inputMonitor(event) {
     event.preventDefault();
-    inputFromForm = {
+    const inputFromForm = {
         email: inputEmail.value,
         message: inputMessage.value,
     }
