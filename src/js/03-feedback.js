@@ -3,38 +3,30 @@ import throttle from 'lodash.throttle';
 const form = document.querySelector('.feedback-form');
 const inputEmail = document.querySelector('input');
 const inputMessage = document.querySelector('textarea');
-const submitButton = document.querySelector('button');
-
 const savedInputs = localStorage.getItem('feedback-form-state');
 const parsedInputs = JSON.parse(savedInputs);
-// console.log(parsedInputs)
 
-//__звернення до сховища___
 if (parsedInputs !== null) {
     inputEmail.value = parsedInputs.email;
     inputMessage.value = parsedInputs.message;
 }
 
 form.addEventListener('input', throttle(inputMonitor, 500));
-// монітор введення
+form.addEventListener('submit', submit);
+
 function inputMonitor(event) {
-    event.preventDefault();
     const inputFromForm = {
         email: inputEmail.value,
         message: inputMessage.value,
-    }
-    localStorage.setItem('feedback-form-state', JSON.stringify(inputFromForm))
+    };
+    localStorage.setItem('feedback-form-state', JSON.stringify(inputFromForm));
     console.log(inputFromForm);
 }
-// слухач кнопки САБМІТ --- чому не працює?????
-submitButton.addEventListener('submit', submit);
 function submit(event) {
     event.preventDefault();
-    form.reset();
-    localStorage.removeItem('feedback-form-state')
+    console.log(parsedInputs);
     inputEmail.value = '';
     inputMessage.value = '';
-    console.log(parsedInputs);
 }
 
 
